@@ -1,0 +1,183 @@
+SQL> create table employee<eid integer primary key, ename varchar<20>, econtact integer>;
+create table employee<eid integer primary key, ename varchar<20>, econtact integer>
+                     *
+ERROR at line 1:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table employee<eid integer primary key, ename varchar(20), econtact integer>;
+create table employee<eid integer primary key, ename varchar(20), econtact integer>
+                     *
+ERROR at line 1:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table employee<eid integer primary key, ename varchar(20), econtact integer);
+create table employee<eid integer primary key, ename varchar(20), econtact integer)
+                     *
+ERROR at line 1:
+ORA-00922: missing or invalid option 
+
+
+SQL> create table employ(eid integer primary key, ename varchar(20), econtact integer);
+
+Table created.
+
+SQL> desc employ
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                       NOT NULL NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ECONTACT                                           NUMBER(38)
+
+SQL> 
+SQL> insert into employ values(1, 'abc');
+insert into employ values(1, 'abc')
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into employ values(110,'abc' ,'999999');
+
+1 row created.
+
+SQL> insert into employ values(114,'def','45324');
+
+1 row created.
+
+SQL> insert into employ values(123,'xyz','542267');
+
+1 row created.
+
+SQL> desc employ
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                       NOT NULL NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ECONTACT                                           NUMBER(38)
+
+SQL> select * from employ;
+
+       EID ENAME                  ECONTACT                                      
+---------- -------------------- ----------                                      
+       110 abc                      999999                                      
+       114 def                       45324                                      
+       123 xyz                      542267                                      
+
+SQL> insert into employ values(&eid,'&ename',&econtact);
+Enter value for eid: 146
+Enter value for ename: ghc
+Enter value for econtact: 87543
+old   1: insert into employ values(&eid,'&ename',&econtact)
+new   1: insert into employ values(146,'ghc',87543)
+
+1 row created.
+
+SQL> select * from employ;
+
+       EID ENAME                  ECONTACT                                      
+---------- -------------------- ----------                                      
+       110 abc                      999999                                      
+       114 def                       45324                                      
+       123 xyz                      542267                                      
+       146 ghc                       87543                                      
+
+SQL> alter table employ add etype integer, default=000;
+alter table employ add etype integer, default=000
+                                    *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option 
+
+
+SQL> alter table employ add etype integer;
+
+Table altered.
+
+SQL> desc employ
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                       NOT NULL NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ECONTACT                                           NUMBER(38)
+ ETYPE                                              NUMBER(38)
+
+SQL> update employ set etype=13 where eid=110;
+
+1 row updated.
+
+SQL> select * from employ;
+
+       EID ENAME                  ECONTACT      ETYPE                           
+---------- -------------------- ---------- ----------                           
+       110 abc                      999999         13                           
+       114 def                       45324                                      
+       123 xyz                      542267                                      
+       146 ghc                       87543                                      
+
+SQL> update employ set etype=14 where eid=114;
+
+1 row updated.
+
+SQL> update employ set etype=11 where eid=123;
+
+1 row updated.
+
+SQL> update employ set etype=11 where eid=146;
+
+1 row updated.
+
+SQL> select * from employ;
+
+       EID ENAME                  ECONTACT      ETYPE                           
+---------- -------------------- ---------- ----------                           
+       110 abc                      999999         13                           
+       114 def                       45324         14                           
+       123 xyz                      542267         11                           
+       146 ghc                       87543         11                           
+
+SQL> alter table employ rename column econtact to econt;
+
+Table altered.
+
+SQL> desc
+Usage: DESCRIBE [schema.]object[@db_link]
+SQL> desc employ
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EID                                       NOT NULL NUMBER(38)
+ ENAME                                              VARCHAR2(20)
+ ECONT                                              NUMBER(38)
+ ETYPE                                              NUMBER(38)
+
+SQL> alter table employ modify ename varchar(30);
+
+Table altered.
+
+SQL> select * from employ;
+
+       EID ENAME                               ECONT      ETYPE                 
+---------- ------------------------------ ---------- ----------                 
+       110 abc                                999999         13                 
+       114 def                                 45324         14                 
+       123 xyz                                542267         11                 
+       146 ghc                                 87543         11                 
+
+SQL> truncate table employ;
+
+Table truncated.
+
+SQL> select * from employ;
+
+no rows selected
+
+SQL> drop table employ;
+
+Table dropped.
+
+SQL> desc employ;
+ERROR:
+ORA-04043: object employ does not exist 
+
+
+SQL> spool off;

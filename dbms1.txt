@@ -1,0 +1,127 @@
+SQL> create coursefees(course_id integer primary key,elective varchar(20),fees integer);
+create coursefees(course_id integer primary key,elective varchar(20),fees integer)
+       *
+ERROR at line 1:
+ORA-00901: invalid CREATE command 
+
+
+SQL> create table coursefees(course_id integer primary key,elective varchar(20),fees integer);
+
+Table created.
+
+SQL> insert into coursefees values(501,'java',2200);
+
+1 row created.
+
+SQL> insert into coursefees values(502,'adv java',2500);
+
+1 row created.
+
+SQL> insert into coursefees values(532,'python',3500);
+
+1 row created.
+
+SQL> insert into coursefees values(541,'C',1500);
+
+1 row created.
+
+SQL> desc coursefees
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSE_ID                                 NOT NULL NUMBER(38)
+ ELECTIVE                                           VARCHAR2(20)
+ FEES                                               NUMBER(38)
+
+SQL> select count(fees) from coursefees
+  2  ;
+
+COUNT(FEES)                                                                     
+-----------                                                                     
+          4                                                                     
+
+SQL> select avg(fees) from coursefees;
+
+ AVG(FEES)                                                                      
+----------                                                                      
+      2425                                                                      
+
+SQL> select max(fees),elective from coursefees;
+select max(fees),elective from coursefees
+                 *
+ERROR at line 1:
+ORA-00937: not a single-group group function 
+
+
+SQL> select max(fees) from coursefees
+  2  
+SQL> select max(fees) from coursefees;
+
+ MAX(FEES)                                                                      
+----------                                                                      
+      3500                                                                      
+
+SQL> select min(fees) from coursefees;
+
+ MIN(FEES)                                                                      
+----------                                                                      
+      1500                                                                      
+
+SQL> select sum(fees) from coursefees where rownum<4;
+
+ SUM(FEES)                                                                      
+----------                                                                      
+      8200                                                                      
+
+SQL> insert into coursefees values(546,'compiler',3400);
+
+1 row created.
+
+SQL> insert into coursefees values(547,'compiler',1200);
+
+1 row created.
+
+SQL> insert into coursefees values(548,'compiler',2200);
+
+1 row created.
+
+SQL> select max(fees> from coursefess where elective='compiler';
+select max(fees> from coursefess where elective='compiler'
+               *
+ERROR at line 1:
+ORA-00907: missing right parenthesis 
+
+
+SQL> select max(fees) from coursefess where elective='compiler';
+select max(fees) from coursefess where elective='compiler'
+                      *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> select max(fees),min(fees) from coursefees where elective='compiler';
+
+ MAX(FEES)  MIN(FEES)                                                           
+---------- ----------                                                           
+      3400       1200                                                           
+
+SQL> select max(fees)+min(fees) from coursefees where elective='compiler';
+
+MAX(FEES)+MIN(FEES)                                                             
+-------------------                                                             
+               4600                                                             
+
+SQL> select * from coursefees;
+
+ COURSE_ID ELECTIVE                   FEES                                      
+---------- -------------------- ----------                                      
+       501 java                       2200                                      
+       502 adv java                   2500                                      
+       532 python                     3500                                      
+       541 C                          1500                                      
+       546 compiler                   3400                                      
+       547 compiler                   1200                                      
+       548 compiler                   2200                                      
+
+7 rows selected.
+
+SQL> spool off;

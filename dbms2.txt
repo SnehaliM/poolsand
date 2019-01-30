@@ -1,0 +1,257 @@
+SQL> create table loan(loan_no integer primary key,amount integer,branch varchar(10));
+
+Table created.
+
+SQL> create table R(cust_name varchar(30),loan_no integer, foreign key(loan_no) references loan(loan_no));
+
+Table created.
+
+SQL> insert into loan values(102,24500,'A');
+
+1 row created.
+
+SQL> insert into loan values(152,45500,'A');
+
+1 row created.
+
+SQL> insert into loan values(112,5600,'B');
+
+1 row created.
+
+SQL> insert into loan values(187,60000,'C');
+
+1 row created.
+
+SQL> insert into R values('APJ',102);
+
+1 row created.
+
+SQL> insert into R values('SOP',152);
+
+1 row created.
+
+SQL> insert into R values('PED',112);
+
+1 row created.
+
+SQL> insert into R values('FSD',187);
+
+1 row created.
+
+SQL> select R.cust_name from R where loan.amount>2000
+  2  
+SQL> select R.cust_name from R where loan.amount>2000;
+select R.cust_name from R where loan.amount>2000
+                                *
+ERROR at line 1:
+ORA-00904: "LOAN"."AMOUNT": invalid identifier 
+
+
+SQL> select R.cust_name from R,loan where loan.amount>2000;
+
+CUST_NAME                                                                       
+------------------------------                                                  
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+
+CUST_NAME                                                                       
+------------------------------                                                  
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+
+16 rows selected.
+
+SQL> select R.cust_name from R,loan where loan.amount>2000 and loan.loan_no=R.loan_no;
+
+CUST_NAME                                                                       
+------------------------------                                                  
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+
+SQL> select R.cust_name,loan.loan_no,loan.amount from R,loan and loan.loan_no.=R.loan_no;
+select R.cust_name,loan.loan_no,loan.amount from R,loan and loan.loan_no.=R.loan_no
+                                                        *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select R.cust_name,loan.loan_no,loan.amount from R,loan where loan.loan_no.=R.loan_no;
+select R.cust_name,loan.loan_no,loan.amount from R,loan where loan.loan_no.=R.loan_no
+                                                                           *
+ERROR at line 1:
+ORA-01747: invalid user.table.column, table.column, or column specification 
+
+
+SQL> select R.cust_name,loan.loan_no,loan.amount from R,loan;
+
+CUST_NAME                         LOAN_NO     AMOUNT                            
+------------------------------ ---------- ----------                            
+APJ                                   102      24500                            
+SOP                                   102      24500                            
+PED                                   102      24500                            
+FSD                                   102      24500                            
+APJ                                   152      45500                            
+SOP                                   152      45500                            
+PED                                   152      45500                            
+FSD                                   152      45500                            
+APJ                                   112       5600                            
+SOP                                   112       5600                            
+PED                                   112       5600                            
+
+CUST_NAME                         LOAN_NO     AMOUNT                            
+------------------------------ ---------- ----------                            
+FSD                                   112       5600                            
+APJ                                   187      60000                            
+SOP                                   187      60000                            
+PED                                   187      60000                            
+FSD                                   187      60000                            
+
+16 rows selected.
+
+SQL> select R.cust_name,loan.loan_no,loan.amount from R,loan where loan.loan_no=R.loan_no;
+
+CUST_NAME                         LOAN_NO     AMOUNT                            
+------------------------------ ---------- ----------                            
+APJ                                   102      24500                            
+SOP                                   152      45500                            
+PED                                   112       5600                            
+FSD                                   187      60000                            
+
+SQL> select loan.branch from loan where loan.amount>3000;
+
+BRANCH                                                                          
+----------                                                                      
+A                                                                               
+A                                                                               
+B                                                                               
+C                                                                               
+
+SQL> select R.cust_name from loan,R where loan.branch='A' and loan.branch='B';
+
+no rows selected
+
+SQL> select loan.loan_no from loan where loan.amount>1000 and loan.amount<6000;
+
+   LOAN_NO                                                                      
+----------                                                                      
+       112                                                                      
+
+SQL> select R.cust_name from R where R.cust_name=%S;
+select R.cust_name from R where R.cust_name=%S
+                                            *
+ERROR at line 1:
+ORA-00911: invalid character 
+
+
+SQL> select R.cust_name from R where R.cust_name like 'S%';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+SOP                                                                             
+
+SQL> select R.cust_name from R where R.cust_name like '%D';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+PED                                                                             
+FSD                                                                             
+
+SQL> select R.cust_name from R where R.cust_name like '_S%';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+FSD                                                                             
+
+SQL> select R.cust_name from loan,R where loan.branch='A' or loan.branch='B';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+
+CUST_NAME                                                                       
+------------------------------                                                  
+FSD                                                                             
+
+12 rows selected.
+
+SQL> select R.cust_name from loan,R where loan.branch='A' or loan.branch='B' and loan.loan_no=R.loan_no;
+
+CUST_NAME                                                                       
+------------------------------                                                  
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+PED                                                                             
+
+9 rows selected.
+
+SQL> select R.cust_name from R where R.cust_name like '__S';
+
+no rows selected
+
+SQL> select R.cust_name from R where R.cust_name like '__P';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+SOP                                                                             
+
+SQL> alter table R drop coulmn loan_no;
+alter table R drop coulmn loan_no
+                   *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> alter table R drop column loan_no;
+
+Table altered.
+
+SQL> select * from R
+  2  
+SQL> select * from R;
+
+CUST_NAME                                                                       
+------------------------------                                                  
+APJ                                                                             
+SOP                                                                             
+PED                                                                             
+FSD                                                                             
+
+SQL> select distinct(loan.branch) from loan;
+
+BRANCH                                                                          
+----------                                                                      
+A                                                                               
+B                                                                               
+C                                                                               
+
+SQL> spool off;

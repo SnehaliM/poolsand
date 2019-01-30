@@ -1,0 +1,317 @@
+SQL> create table loan (loan_no integer primary key,amount double,branch varchar(20));
+create table loan (loan_no integer primary key,amount double,branch varchar(20))
+                                                            *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> create table loan (loan_no integer primary key,amount float,branch varchar(20));
+create table loan (loan_no integer primary key,amount float,branch varchar(20))
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table loan1 (loan_no integer primary key,amount float,branch varchar(20));
+
+Table created.
+
+SQL> create table borrower (cust_name varchar(30),loan_no integer,foreign key(loan_no) references loan1(loan_no));
+
+Table created.
+
+SQL> insert into loan1 values(1,2234.55,'Del');
+
+1 row created.
+
+SQL> insert into loan1 values(2,5649.55,'Mum');
+
+1 row created.
+
+SQL> insert into loan1 values(3,3500.00,'Kol');
+
+1 row created.
+
+SQL> insert into borrower values('H. Dazz',1);
+
+1 row created.
+
+SQL> insert into borrower values('K. C. Nag',2);
+
+1 row created.
+
+SQL> insert into borrower values('A Sen',3);
+
+1 row created.
+
+SQL> select borrower.cust_name from loan1,borrower where loan1.amount>2000;
+
+CUST_NAME                                                                       
+------------------------------                                                  
+H. Dazz                                                                         
+K. C. Nag                                                                       
+A Sen                                                                           
+H. Dazz                                                                         
+K. C. Nag                                                                       
+A Sen                                                                           
+H. Dazz                                                                         
+K. C. Nag                                                                       
+A Sen                                                                           
+
+9 rows selected.
+
+SQL> select borrower.cust_name from borrower where loan_no in(select loan_no from loan1 where amount>2000);
+
+CUST_NAME                                                                       
+------------------------------                                                  
+H. Dazz                                                                         
+K. C. Nag                                                                       
+A Sen                                                                           
+
+SQL> select borrower.cust_name,loan1.loan_no,loan1.amount from loan1,borrower where borrower.loan_no=loan1.loan_no;
+
+CUST_NAME                         LOAN_NO     AMOUNT                            
+------------------------------ ---------- ----------                            
+H. Dazz                                 1    2234.55                            
+K. C. Nag                               2    5649.55                            
+A Sen                                   3       3500                            
+
+SQL> select loan1.branch from loan1 where loan1.amount=3500;
+
+BRANCH                                                                          
+--------------------                                                            
+Kol                                                                             
+
+SQL> select borrower.cust_name from borrower where borrower.cust_name like 'S%';
+
+no rows selected
+
+SQL> select borrower.cust_name from borrower where borrower.cust_name like 'K%';
+
+CUST_NAME                                                                       
+------------------------------                                                  
+K. C. Nag                                                                       
+
+SQL> select borrower.cust_name,loan1.loan_no,loan1.amount,loan1.branch from loan1,borrower ORDER BY loan1.amount DESC;
+
+CUST_NAME                         LOAN_NO     AMOUNT BRANCH                     
+------------------------------ ---------- ---------- --------------------       
+K. C. Nag                               2    5649.55 Mum                        
+A Sen                                   2    5649.55 Mum                        
+H. Dazz                                 2    5649.55 Mum                        
+H. Dazz                                 3       3500 Kol                        
+A Sen                                   3       3500 Kol                        
+K. C. Nag                               3       3500 Kol                        
+A Sen                                   1    2234.55 Del                        
+K. C. Nag                               1    2234.55 Del                        
+H. Dazz                                 1    2234.55 Del                        
+
+9 rows selected.
+
+SQL> select loan1.loan_no,loan1.amount,loan1.branch from loan1 ORDER BY loan1.amount DESC ;
+
+   LOAN_NO     AMOUNT BRANCH                                                    
+---------- ---------- --------------------                                      
+         2    5649.55 Mum                                                       
+         3       3500 Kol                                                       
+         1    2234.55 Del                                                       
+
+SQL> select distinct(loan1.branch) from loan1;
+
+BRANCH                                                                          
+--------------------                                                            
+Del                                                                             
+Mum                                                                             
+Kol                                                                             
+
+SQL> create table employee(e_id integer,f_name varchar(20),l_name varchar(20),email varchar(30),phno integer,hiredate integer,job_id varchar(20),salary float,comm integer,manager_id integer,dept_id integer);
+create table employee(e_id integer,f_name varchar(20),l_name varchar(20),email varchar(30),phno integer,hiredate integer,job_id varchar(20),salary float,comm integer,manager_id integer,dept_id integer)
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table employ(e_id integer,f_name varchar(20),l_name varchar(20),email varchar(30),phno integer,hiredate integer,job_id varchar(20),salary float,comm integer,manager_id integer,dept_id integer);
+
+Table created.
+
+SQL> drop employ
+  2  ;
+drop employ
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop employ;
+drop employ
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop table employ;
+
+Table dropped.
+
+SQL> create table employ(e_id integer,f_name varchar(20),l_name varchar(20),email varchar(30),phno integer,hiredate date,job_id varchar(20),salary float,comm integer,manager_id integer,dept_id integer);
+
+Table created.
+
+SQL> insert into employ values(1,'Abc','kmn','mail12@m.com',77765,to_date('12/1/2005','DD-MM-YYYY'),'12c',34500.55,223,23,20;
+insert into employ values(1,'Abc','kmn','mail12@m.com',77765,to_date('12/1/2005','DD-MM-YYYY'),'12c',34500.55,223,23,20
+                                                                                                                      *
+ERROR at line 1:
+ORA-00917: missing comma 
+
+
+SQL> insert into employ values(1,'Abc','kmn','mail12@m.com',77765,to_date('12/1/2005','DD-MM-YYYY'),'12c',34500.55,223,23,20);
+
+1 row created.
+
+SQL> insert into employ values(2,'xyz','rk','make2@g.com',765435,to_date('24/3/2007','DD-MM-YYYY'),'14b',36500.55,NULL,45,30);
+
+1 row created.
+
+SQL> insert into employ values(3,'hgd','yds','sandx@l.com',876545,to_date('10/4/2005','DD-MM-YYYY'),'1b',45200.20,20,9,20);
+
+1 row created.
+
+SQL> select f_name,l_name from employ where dept_id=20;
+
+F_NAME               L_NAME                                                     
+-------------------- --------------------                                       
+Abc                  kmn                                                        
+hgd                  yds                                                        
+
+SQL> select emplpoy name,salary*12 as yearly_salary;
+select emplpoy name,salary*12 as yearly_salary
+                                             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select emplpoy salary*12 as yearly_salary;
+select emplpoy salary*12 as yearly_salary
+                     *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> select f_name,(salary*12) from employ as yearly_salary where (salary*12)>10000;
+select f_name,(salary*12) from employ as yearly_salary where (salary*12)>10000
+                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> select f_name,(salary*12) as yearly_salary from employ where (salary*12)>10000;
+
+F_NAME               YEARLY_SALARY                                              
+-------------------- -------------                                              
+Abc                       414006.6                                              
+xyz                       438006.6                                              
+hgd                       542402.4                                              
+
+SQL> select f_name from employ where dept_id!=20;
+
+F_NAME                                                                          
+--------------------                                                            
+xyz                                                                             
+
+SQL> select f_name,l_name from employ where manager_id='12c' and salary>1000;
+select f_name,l_name from employ where manager_id='12c' and salary>1000
+                                                  *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> select f_name,l_name from employ where manager_id is '12c' and salary>1000;
+select f_name,l_name from employ where manager_id is '12c' and salary>1000
+                                                     *
+ERROR at line 1:
+ORA-00908: missing NULL keyword 
+
+
+SQL> select f_name,l_name from employ where manager_id='223' and salary>1000;
+
+no rows selected
+
+SQL> select f_name,l_name from employ where manager_id='9' and salary>1000;
+
+F_NAME               L_NAME                                                     
+-------------------- --------------------                                       
+hgd                  yds                                                        
+
+SQL> select f_name,l_name from employ where manager_id='9' and salary>500 and salary<2000;
+
+no rows selected
+
+SQL> select f_name,l_name from employ where comm=NULL;
+
+no rows selected
+
+SQL> select f_name,l_name from employ where comm is NULL;
+
+F_NAME               L_NAME                                                     
+-------------------- --------------------                                       
+xyz                  rk                                                         
+
+SQL> select f_name,salary from employ where f-name in ('amit','raj','xyz');
+select f_name,salary from employ where f-name in ('amit','raj','xyz')
+                                         *
+ERROR at line 1:
+ORA-00904: "NAME": invalid identifier 
+
+
+SQL> select f_name,salary from employ where f_name in ('amit','raj','xyz');
+
+F_NAME                   SALARY                                                 
+-------------------- ----------                                                 
+xyz                    36500.55                                                 
+
+SQL> select f_name,l_name,job_id from employ where f_name!='xyz' ORDER BY salary DESC;
+
+F_NAME               L_NAME               JOB_ID                                
+-------------------- -------------------- --------------------                  
+hgd                  yds                  1b                                    
+Abc                  kmn                  12c                                   
+
+SQL> select f_name,l_name,job_id,salary from employ where f_name!='xyz' ORDER BY salary DESC;
+
+F_NAME               L_NAME               JOB_ID                   SALARY       
+-------------------- -------------------- -------------------- ----------       
+hgd                  yds                  1b                      45200.2       
+Abc                  kmn                  12c                    34500.55       
+
+SQL> select f_name,l_name,hiredate from employ where hiredate in ('1/7/2006','24/3/2007','4/1/2008') ORDER BY hiredate DESC;
+select f_name,l_name,hiredate from employ where hiredate in ('1/7/2006','24/3/2007','4/1/2008') ORDER BY hiredate DESC
+                                                             *
+ERROR at line 1:
+ORA-01843: not a valid month 
+
+
+SQL> select f_name,l_name,hiredate from employ where hiredate in ('1/07/2006','24/03/2007','4/01/2008') ORDER BY hiredate DESC;
+select f_name,l_name,hiredate from employ where hiredate in ('1/07/2006','24/03/2007','4/01/2008') ORDER BY hiredate DESC
+                                                             *
+ERROR at line 1:
+ORA-01843: not a valid month 
+
+
+SQL> select f_name,l_name,hiredate from employ where hiredate=to_date('1/07/2006','DD-MM-YYYY) or hiredate=to_date('24/03/2007','DD-MM-YYYY') or hiredate=to_date('4/01/2008','DD-MM-YYYY') ORDER BY hiredate DESC;
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> select f_name,l_name,hiredate from employ where hiredate=to_date('1/07/2006','DD-MM-YYYY) or hiredate=to_date('24/03/2007','DD-MM-YYYY') or hiredate=to_date('4/01/2008','DD-MM-YYYY');
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> select f_name,l_name,hiredate from employ where hiredate=to_date('1/07/2006','DD-MM-YYYY') or hiredate=to_date('24/03/2007','DD-MM-YYYY') or hiredate=to_date('4/01/2008','DD-MM-YYYY') ORDER BY hiredate DESC;
+
+F_NAME               L_NAME               HIREDATE                              
+-------------------- -------------------- ---------                             
+xyz                  rk                   24-MAR-07                             
+
+SQL> spool off
